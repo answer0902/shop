@@ -3,17 +3,8 @@ package com.answer.server.mapper;
 import com.answer.server.model.Product;
 import com.answer.server.model.ProductExample;
 import java.util.List;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.DeleteProvider;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectProvider;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.UpdateProvider;
+
+import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
 
 public interface ProductMapper {
@@ -39,6 +30,16 @@ public interface ProductMapper {
     })
     int insert(Product record);
 
+    @Insert({
+            "insert into shop_product ( name, ",
+            "price, stock, desc_id, ",
+            "cate_id)",
+            "values (#{name,jdbcType=VARCHAR}, ",
+            "#{price,jdbcType=DECIMAL}, #{stock,jdbcType=INTEGER}, #{descId,jdbcType=INTEGER}, ",
+            "#{cateId,jdbcType=INTEGER})"
+    })
+    int insertProd(Product record);
+
     @InsertProvider(type=ProductSqlProvider.class, method="insertSelective")
     int insertSelective(Product record);
 
@@ -49,7 +50,9 @@ public interface ProductMapper {
         @Result(column="price", property="price", jdbcType=JdbcType.DECIMAL),
         @Result(column="stock", property="stock", jdbcType=JdbcType.INTEGER),
         @Result(column="desc_id", property="descId", jdbcType=JdbcType.INTEGER),
-        @Result(column="cate_id", property="cateId", jdbcType=JdbcType.INTEGER)
+        @Result(column="cate_id", property="cateId", jdbcType=JdbcType.INTEGER),
+            @Result(property = "desc",column = "desc_id",
+                    one = @One(select = "com.answer.server.mapper.DescMapper.selectByPrimaryKey"))
     })
     List<Product> selectByExample(ProductExample example);
 
@@ -66,9 +69,30 @@ public interface ProductMapper {
         @Result(column="price", property="price", jdbcType=JdbcType.DECIMAL),
         @Result(column="stock", property="stock", jdbcType=JdbcType.INTEGER),
         @Result(column="desc_id", property="descId", jdbcType=JdbcType.INTEGER),
-        @Result(column="cate_id", property="cateId", jdbcType=JdbcType.INTEGER)
+        @Result(column="cate_id", property="cateId", jdbcType=JdbcType.INTEGER),
+            @Result(property = "desc",column = "desc_id",
+            one = @One(select = "com.answer.server.mapper.DescMapper.selectByPrimaryKey"))
     })
     Product selectByPrimaryKey(Integer prodId);
+
+    @Select({
+            "select",
+            "prod_id, name, price, stock, desc_id, cate_id",
+            "from shop_product",
+            "where cate_id = #{cateId,jdbcType=INTEGER}"
+    })
+    @Results({
+            @Result(column="prod_id", property="prodId", jdbcType=JdbcType.INTEGER, id=true),
+            @Result(column="name", property="name", jdbcType=JdbcType.VARCHAR),
+            @Result(column="price", property="price", jdbcType=JdbcType.DECIMAL),
+            @Result(column="stock", property="stock", jdbcType=JdbcType.INTEGER),
+            @Result(column="desc_id", property="descId", jdbcType=JdbcType.INTEGER),
+            @Result(column="cate_id", property="cateId", jdbcType=JdbcType.INTEGER),
+            @Result(property = "desc",column = "desc_id",
+                    one = @One(select = "com.answer.server.mapper.DescMapper.selectByPrimaryKey"))
+    })
+    List<Product> selectByCateId(Integer cateId);
+
 
     @UpdateProvider(type=ProductSqlProvider.class, method="updateByExampleSelective")
     int updateByExampleSelective(@Param("record") Product record, @Param("example") ProductExample example);

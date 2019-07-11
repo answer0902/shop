@@ -37,6 +37,14 @@ public interface DescMapper {
     })
     int insert(Desc record);
 
+    @Insert({
+            "insert into shop_desc (prod_service, ",
+            "prod_comment, img_src)",
+            "values (#{prodService,jdbcType=VARCHAR}, ",
+            "#{prodComment,jdbcType=VARCHAR}, #{imgSrc,jdbcType=VARCHAR})"
+    })
+    int insertDesc(Desc record);
+
     @InsertProvider(type=DescSqlProvider.class, method="insertSelective")
     int insertSelective(Desc record);
 
@@ -62,6 +70,18 @@ public interface DescMapper {
         @Result(column="img_src", property="imgSrc", jdbcType=JdbcType.VARCHAR)
     })
     Desc selectByPrimaryKey(Integer descId);
+
+    @Select({
+            "select",
+            "desc_id",
+            "from shop_desc",
+            "order by desc_id ",
+            "desc"
+    })
+    @Results({
+            @Result(column="desc_id", property="descId", jdbcType=JdbcType.INTEGER, id=true),
+    })
+    List<Integer> selectDescId();
 
     @UpdateProvider(type=DescSqlProvider.class, method="updateByExampleSelective")
     int updateByExampleSelective(@Param("record") Desc record, @Param("example") DescExample example);

@@ -49,6 +49,10 @@ public class CategorySqlProvider {
             VALUES("cate_name", "#{cateName,jdbcType=VARCHAR}");
         }
         
+        if (record.getCateImg() != null) {
+            VALUES("cate_img", "#{cateImg,jdbcType=VARCHAR}");
+        }
+        
         return SQL();
     }
 
@@ -60,6 +64,7 @@ public class CategorySqlProvider {
             SELECT("cate_id");
         }
         SELECT("cate_name");
+        SELECT("cate_img");
         FROM("shop_category");
         applyWhere(example, false);
         
@@ -85,6 +90,10 @@ public class CategorySqlProvider {
             SET("cate_name = #{record.cateName,jdbcType=VARCHAR}");
         }
         
+        if (record.getCateImg() != null) {
+            SET("cate_img = #{record.cateImg,jdbcType=VARCHAR}");
+        }
+        
         applyWhere(example, true);
         return SQL();
     }
@@ -95,6 +104,7 @@ public class CategorySqlProvider {
         
         SET("cate_id = #{record.cateId,jdbcType=INTEGER}");
         SET("cate_name = #{record.cateName,jdbcType=VARCHAR}");
+        SET("cate_img = #{record.cateImg,jdbcType=VARCHAR}");
         
         CategoryExample example = (CategoryExample) parameter.get("example");
         applyWhere(example, true);
@@ -107,6 +117,10 @@ public class CategorySqlProvider {
         
         if (record.getCateName() != null) {
             SET("cate_name = #{cateName,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getCateImg() != null) {
+            SET("cate_img = #{cateImg,jdbcType=VARCHAR}");
         }
         
         WHERE("cate_id = #{cateId,jdbcType=INTEGER}");

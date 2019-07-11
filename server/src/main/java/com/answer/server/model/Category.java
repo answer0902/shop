@@ -7,6 +7,8 @@ public class Category {
 
     private String cateName;
 
+    private String cateImg;
+
     private List<Product> productList;
 
     public List<Product> getProductList() {
@@ -31,5 +33,13 @@ public class Category {
 
     public void setCateName(String cateName) {
         this.cateName = cateName == null ? null : cateName.trim();
+    }
+
+    public String getCateImg() {
+        return cateImg;
+    }
+
+    public void setCateImg(String cateImg) {
+        this.cateImg = cateImg == null ? null : cateImg.trim();
     }
 }

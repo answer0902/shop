@@ -5,9 +5,35 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
-		<title>一手</title>
+		<title>SHOP</title>
 		
 		<link rel="stylesheet" href="css/style.css">
+		<script src="js/jquery-3.1.1.min.js"></script>
+		<script src="js/mui.min.js"></script>
+		<script src="js/tojson.js"></script>
+		<script>
+            var url=window.location.search;
+            var str=url.toString().split("=")
+            var prodId=str[1];
+            var QUERY_PRO_URL="http://localhost:8080/product/queryProdById/"+prodId;
+            $(function () {
+                $.ajax({
+                    url:QUERY_PRO_URL,
+                    type:"post",
+                    dataType:"text json",
+                    statusCode:{
+                        200:function (data) {
+                            $("#price").html(data.price)
+                            $("#name").html(data.name);
+                            $("#kuncun").html(data.stock);
+                            $("#pingjia").html(data.desc.prodComment);
+                            $("#dazhe").html(data.desc.prodService);
+
+                        }
+                    }
+                })
+            })
+		</script>
 	</head>
 	<body>
 		
@@ -27,58 +53,31 @@
 				<a href="javascript:void(0);" class="if-slideimg" style="background-image: url(add/add.png);"></a>
 			</div>
 			
-			<h3 class="if-pri">
-				¥200 <span class="gray">¥200</span>
+			<h3 class="if-pri" id="price">
+				<!--<span class="gray">¥200</span>-->
 			</h3>
 			
 			<div class="if-tit">
-				<h3>现货！气质简约斜肩上衣+休闲合适长裤配腰带</h3>
-				<p class="gray">特色说明</p>
+				<p id="name"></p>
+				<p class="gray"></p>
 			</div>
 			
 			<span class="if-tip">
 				<em>
-					<i>●</i> 月销20件
+					库存:<i id="kuncun">●</i>
 				</em>
 				<em>
-					<i>●</i> 七天退换
+					打折:<i id="dazhe">●</i>
 				</em>
 			</span>
 			
 			<h3 class="if-tita">
-				<span></span> 商品信息
+				<span></span> 评价
 			</h3>
 			
 			<div class="if-tys">
-				<span class="if-tys-half">分类：连衣裙</span>
-				<span class="if-tys-half">颜色：白色、红色</span>
-				<span class="if-tys-half">面料：连衣裙</span>
-				<span class="if-tys-half">尺寸：均码</span>
-				
-				<div class="if-tys-all">
-					<em>长度偏差：</em>
-					<span>偏短</span>
-					<span class="act">正常</span>
-					<span>偏长</span>
-				</div>
-				<div class="if-tys-all">
-					<em>尺码偏差：</em>
-					<span>偏短</span>
-					<span class="act">正常</span>
-					<span>偏长</span>
-				</div>
-				<div class="if-tys-all">
-					<em>厚薄指数：</em>
-					<span class="act">偏短</span>
-					<span>正常</span>
-					<span>偏长</span>
-				</div>
-				<div class="if-tys-all">
-					<em>弹性指数：</em>
-					<span>偏短</span>
-					<span>正常</span>
-					<span class="act">偏长</span>
-				</div>
+				<span class="if-tys-half" id="pingjia">分类：连衣裙</span>
+
 			</div>
 			
 			<h3 class="if-tita">
@@ -107,7 +106,7 @@
 				<img src="img/ic_add.png">
 				<p>收藏</p>
 			</a>
-			<a href="javascript:void(null)" class="if-cartsub">加入进货车</a>
+			<a href="order.html" class="if-cartsub">加入进货车</a>
 			<a href="javascript:void(null)" class="if-cartsub if-orsub">立即购买</a>
 		</footer>
 		

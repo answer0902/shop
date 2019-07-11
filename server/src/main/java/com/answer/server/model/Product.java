@@ -15,6 +15,16 @@ public class Product {
 
     private Integer cateId;
 
+    private Desc desc;
+
+    public Desc getDesc() {
+        return desc;
+    }
+
+    public void setDesc(Desc desc) {
+        this.desc = desc;
+    }
+
     public Integer getProdId() {
         return prodId;
     }

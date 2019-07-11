@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface categoryService {
     List<Category> queryCate();
+
+    void addCate(String cateName, String cateImg);
 }

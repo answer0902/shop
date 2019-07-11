@@ -24,6 +24,54 @@
 <!--/meta 作为公共模版分离出去-->
 
 <link href="lib/webuploader/0.1.5/webuploader.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+	<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+	<script type="text/javascript" src="static/h-ui/js/H-ui.js"></script>
+	<script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.page.js"></script>
+	<script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+	<script type="text/javascript" src="lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
+	<script>
+        var QUERY_CATE_URL="http://localhost:8080/cate/queryCate";
+		$(function () {
+			$.ajax({
+				url:QUERY_CATE_URL,
+				type:"post",
+				statusCode:{
+				    200:function (data) {
+						$(data).each(function (index,val) {
+							$("#cate").append("<option value="+val.cateId+">"+val.cateName+"</option>")
+                        })
+                    }
+				}
+			})
+        });
+		function article_save_submit() {
+			var name=$("#name").val();
+			var price=$("#price").val();
+			var stock=$("#stock").val();
+			var cate=$("#cate").val();
+			var prod_service=$("#prod_service").val();
+			var prod_comment=$("#prod_comment").val();
+			var img_src=$("#img_src").val();
+
+			var msg=""+name+"-"+price+"-"+stock+"-"+cate+"-"+prod_service+"-"+
+                prod_comment+"-"+img_src;
+			//alert(msg)
+			var ADD_PROD="http://localhost:8080/product/addProd/"+msg;
+			$.ajax({
+				url:ADD_PROD,
+				type:"post",
+				statusCode:{
+				    200:function () {
+				        alert("发布成功")
+						//window.location="H-ui.admin.page/product-list.html";
+                    }
+				}
+			})
+
+        }
+	</script>
 </head>
 <body>
 <div class="page-container">
@@ -51,20 +99,10 @@
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>产品类别：</label>
 			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
 				<select name="shop_category" class="select" id="cate">
-					<option value="0">一级分类</option>
-					<option value="1">一级分类</option>
-					<option value="11">├二级分类</option>
-					<option value="12">├二级分类</option>
-					<option value="13">├二级分类</option>
 				</select>
 				</span> </div>
 		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>产品描述：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text"  id="prod_comment" name="prod_comment">
-			</div>
-		</div>
+
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>产品打折：</label>
 			<div class="formControls col-xs-8 col-sm-9">
@@ -72,44 +110,24 @@
 			</div>
 		</div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2">图片上传：</label>
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>产品评价：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<div class="uploader-list-container">
-					<div class="queueList">
-						<div id="dndArea" class="placeholder">
-							<div id="filePicker-2"></div>
-							<p>或将照片拖到这里，单次最多可选300张</p>
-						</div>
-					</div>
-					<div class="statusBar" style="display:none;">
-						<div class="progress"> <span class="text">0%</span> <span class="percentage"></span> </div>
-						<div class="info"></div>
-						<div class="btns">
-							<div id="filePicker2"></div>
-							<div class="uploadBtn">开始上传</div>
-						</div>
-					</div>
-				</div>
+				<input type="text" class="input-text"  id="prod_comment" name="prod_comment">
 			</div>
 		</div>
 
 		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>上传图片路径：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text"  id="img_src" name="img_src">
+			</div>
+		</div>
+
+
+		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
-				<button onClick="article_save_submit();" class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 保存并提交审核</button>
+				<button onClick="article_save_submit();" class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 提交</button>
 				<button onClick="layer_close();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
 			</div>
 		</div>

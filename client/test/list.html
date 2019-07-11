@@ -5,9 +5,38 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
-		<title>一手</title>
+		<title>SHOP</title>
 		
 		<link rel="stylesheet" href="css/style.css">
+		<script src="js/jquery-3.1.1.min.js"></script>
+		<script src="js/mui.min.js"></script>
+		<script src="js/tojson.js"></script>
+		<script>
+            var url=window.location.search;
+            var str=url.toString().split("=")
+			var cateId=str[1]
+            var QUERY_PRO_URL="http://localhost:8080/product/queryProdByCate/"+cateId;
+            $(function () {
+				$.ajax({
+					url:QUERY_PRO_URL,
+					type:"post",
+					dataType:"text json",
+					statusCode:{
+					    200:function (data) {
+							$(data).each(function (index,val) {
+								var s="<div class='li-box'>" +
+                                    "<a href='info.html?prod="+val.prodId+"' class='li-box-img' style='background-image: url("+"../img/"+val.desc.imgSrc+");'></a>" +
+                                    "<a href='info.html' class='li-box-tit'>"+val.name+"</a>" +
+                                    "<span class='li-box-pri'>"+val.price+
+                                    "</span>" +
+                                    "</div>";
+							    $("#queryProd").append(s);
+                            })
+                        }
+					}
+				})
+            })
+		</script>
 	</head>
 	<body>
 		
@@ -15,72 +44,28 @@
 			<a href="javascript:void(0);" class="bar-bback">
 				<img src="img/back.png">
 			</a>
-			<h3 class="title">分类</h3>
+			<h3 class="title">商品列表</h3>
 			<a href="javascript:void(0);" class="bar-new">
 				<img src="img/ic_me_consule.png">
 			</a>
 		</header>
 		
-		<div class="content top-pad">
+		<div class="content top-pad" id="queryProd">
 			
 			<div class="li-info">
 				<img src="add/ina.jpg" class="li-info-img">
 			</div>
-			
-			<div class="litab">
-				<a href="javascript:void(0);">销量</a>
-				<a href="javascript:void(0);">批发价</a>
-				<a href="javascript:void(0);">筛选</a>
-			</div>
-			
-			<div class="li-box">
+
+			<!--<div class="li-box">
 				<a href="info.html" class="li-box-img" style="background-image: url(add/add1.png);"></a>
 				<a href="info.html" class="li-box-tit">现货！气质简约斜肩上衣+休闲合适长裤配腰带</a>
 				<span class="li-box-pri">
 					¥200
-					
 					<a href="javascript:void(0);">
 						<img src="img/ic_add.png">
 					</a>
 				</span>
-			</div>
-			
-			<div class="li-box">
-				<a href="info.html" class="li-box-img" style="background-image: url(add/add1.png);"></a>
-				<a href="info.html" class="li-box-tit">现货！气质简约斜肩上衣+休闲合适长裤配腰带</a>
-				<span class="li-box-pri">
-					¥200
-					
-					<a href="javascript:void(0);">
-						<img src="img/ic_add.png">
-					</a>
-				</span>
-			</div>
-			
-			<div class="li-box">
-				<a href="info.html" class="li-box-img" style="background-image: url(add/add1.png);"></a>
-				<a href="info.html" class="li-box-tit">现货！气质简约斜肩上衣+休闲合适长裤配腰带</a>
-				<span class="li-box-pri">
-					¥200
-					
-					<a href="javascript:void(0);">
-						<img src="img/ic_add.png">
-					</a>
-				</span>
-			</div>
-			
-			<div class="li-box">
-				<a href="info.html" class="li-box-img" style="background-image: url(add/add1.png);"></a>
-				<a href="info.html" class="li-box-tit">现货！气质简约斜肩上衣+休闲合适长裤配腰带</a>
-				<span class="li-box-pri">
-					¥200
-					
-					<a href="javascript:void(0);">
-						<img src="img/ic_add.png">
-					</a>
-				</span>
-			</div>
-			
+			</div>-->
 		</div>
 		
 	</body>

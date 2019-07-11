@@ -21,10 +21,20 @@ public interface CategoryMapper {
     int deleteByPrimaryKey(Integer cateId);
 
     @Insert({
-        "insert into shop_category (cate_id, cate_name)",
-        "values (#{cateId,jdbcType=INTEGER}, #{cateName,jdbcType=VARCHAR})"
+        "insert into shop_category (cate_id, cate_name, ",
+        "cate_img)",
+        "values (#{cateId,jdbcType=INTEGER}, #{cateName,jdbcType=VARCHAR}, ",
+        "#{cateImg,jdbcType=VARCHAR})"
     })
     int insert(Category record);
+
+    @Insert({
+            "insert into shop_category (cate_name, ",
+            "cate_img)",
+            "values (#{cateName,jdbcType=VARCHAR}, ",
+            "#{cateImg,jdbcType=VARCHAR})"
+    })
+    int insertCate(Category record);
 
     @InsertProvider(type=CategorySqlProvider.class, method="insertSelective")
     int insertSelective(Category record);
@@ -33,21 +43,23 @@ public interface CategoryMapper {
     @Results({
         @Result(column="cate_id", property="cateId", jdbcType=JdbcType.INTEGER, id=true),
         @Result(column="cate_name", property="cateName", jdbcType=JdbcType.VARCHAR),
-            @Result(property = "productList",column = "cate_id",one = @One(select = "com.yesp.server.mapper.ProductMapper.selectByCateId"))
+        @Result(column="cate_img", property="cateImg", jdbcType=JdbcType.VARCHAR),
+            @Result(property = "productList",column = "cate_id",
+                    one = @One(select = "com.answer.server.mapper.ProductMapper.selectByCateId"))
 
     })
     List<Category> selectByExample(CategoryExample example);
 
-
     @Select({
         "select",
-        "cate_id, cate_name",
+        "cate_id, cate_name, cate_img",
         "from shop_category",
         "where cate_id = #{cateId,jdbcType=INTEGER}"
     })
     @Results({
         @Result(column="cate_id", property="cateId", jdbcType=JdbcType.INTEGER, id=true),
-        @Result(column="cate_name", property="cateName", jdbcType=JdbcType.VARCHAR)
+        @Result(column="cate_name", property="cateName", jdbcType=JdbcType.VARCHAR),
+        @Result(column="cate_img", property="cateImg", jdbcType=JdbcType.VARCHAR)
     })
     Category selectByPrimaryKey(Integer cateId);
 
@@ -62,7 +74,8 @@ public interface CategoryMapper {
 
     @Update({
         "update shop_category",
-        "set cate_name = #{cateName,jdbcType=VARCHAR}",
+        "set cate_name = #{cateName,jdbcType=VARCHAR},",
+          "cate_img = #{cateImg,jdbcType=VARCHAR}",
         "where cate_id = #{cateId,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(Category record);

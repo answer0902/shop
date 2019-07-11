@@ -18,8 +18,6 @@ public class CategoryDaoImpl implements categoryDao{
     @Autowired
     private CategoryMapper cdao;
 
-
-
     @Override
     public List<Category> queryCate() {
 
@@ -28,6 +26,8 @@ public class CategoryDaoImpl implements categoryDao{
         example.createCriteria().andCateIdIsNotNull();
 
         List<Category> clist=cdao.selectByExample(example);
+
+    //    clist.forEach(c-> System.out.println(c.getProductList().get(0).getDesc().getProdComment()));
 
         return clist;
     }
